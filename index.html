@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nivesh Plus | Financial Calculators by Sanjay Dubey</title>
+<meta name="description" content="Free multi-step financial calculators: human life value, retirement, child education, marriage, honeymoon, goal savings, EMI and loan planning. By Sanjay Dubey, Nivesh Plus.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-root="">
+<div id="np-header"></div>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div>
+        <span class="eyebrow">Nivesh Plus · Financial planning</span>
+        <h1>Every family goal deserves a <em>clear plan.</em></h1>
+        <p class="lead">Simple, step-by-step calculators for insurance, retirement, your child’s education, weddings and loans. See exactly how much to invest today in LIC, Post Office or mutual funds, then download a professional report.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-gold btn-lg" href="#calculators" id="cta-calcs"></a>
+          <a class="btn btn-ghost btn-lg" href="calculators/child-education.html" id="cta-edu"></a>
+        </div>
+        <div class="hero-points" id="hero-points"></div>
+      </div>
+      <div class="advisor-card">
+        <div class="top">
+          <img class="advisor-photo" data-np="photo" alt="Photo of the advisor">
+          <div>
+            <h3 data-np="name"></h3>
+            <div class="role"><span data-np="title"></span>, <span data-np="company"></span></div>
+            <div class="cred" data-np="credentials"></div>
+          </div>
+        </div>
+        <div data-np="contact"></div>
+        <a class="btn btn-primary" data-np="call" id="cta-call"></a>
+        <div class="mini-quote" id="mini-quote"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="calculators">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">10 calculators</span>
+        <h2>Choose a calculator</h2>
+        <p>Each calculator takes 3–5 short steps, explains every number and ends with a clear summary you can download as a PDF.</p>
+      </div>
+      <div id="calc-groups"></div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head center" style="text-align:center">
+        <span class="eyebrow">How it works</span>
+        <h2>From goal to plan in three steps</h2>
+      </div>
+      <div class="steps-3">
+        <div><div class="num">1</div><h3>Tell us your goal</h3><p>Pick a goal like your child’s engineering degree or your retirement. We pre-fill average costs for Indian metro cities.</p></div>
+        <div><div class="num">2</div><h3>See the future cost</h3><p>Costs rise every year. We apply inflation to show what the goal will actually cost on the day you need the money.</p></div>
+        <div><div class="num">3</div><h3>Get your investment plan</h3><p>Compare a one-time amount, monthly SIP or yearly investment in LIC, Post Office and mutual funds, then download the report.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Investment options</span>
+        <h2>Three ways to reach every goal</h2>
+        <p>Every goal calculator compares these options side by side. Choose the expected return for each one from a drop-down, and see the real return after inflation.</p>
+      </div>
+      <div class="options-3" id="options-3"></div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="about">
+    <div class="container about">
+      <img class="about-photo" data-np="photo" alt="Photo of the advisor">
+      <div>
+        <span class="eyebrow">About your advisor</span>
+        <h2 data-np="name"></h2>
+        <p class="muted" style="margin-top:-6px"><span data-np="title"></span> · <span data-np="company"></span></p>
+        <p data-np="bio"></p>
+        <div class="chip-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" id="services"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="cta-band">
+        <div>
+          <h2>Let’s build your family’s financial plan</h2>
+          <p>Book a free, no-obligation consultation. Bring your calculator report along.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn btn-gold btn-lg" data-np="call" id="cta-call-2"></a>
+          <a class="btn btn-ghost btn-lg" id="cta-mail" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.3)"></a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px" id="contact-cards"></div>
+    </div>
+  </section>
+</main>
+
+<div id="np-footer"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/core.js"></script>
+<script>
+(function () {
+  const NP = window.NP, C = NP.config, I = NP.icon, esc = NP.esc;
+  document.getElementById('cta-calcs').innerHTML = I('calculator') + 'Explore calculators';
+  document.getElementById('cta-edu').innerHTML = I('graduation-cap') + 'Plan child’s education';
+  document.getElementById('cta-call').innerHTML = I('phone') + 'Book a free consultation';
+  document.getElementById('cta-call-2').innerHTML = I('phone') + esc(C.contact.phone);
+  const mail = document.getElementById('cta-mail');
+  mail.href = 'mailto:' + C.contact.email; mail.innerHTML = I('mail') + 'Email us';
+  document.getElementById('hero-points').innerHTML = [['shield-check', 'Insurance & retirement'], ['graduation-cap', 'Education & marriage'], ['file-text', 'Free PDF reports']]
+    .map(p => '<span>' + I(p[0]) + p[1] + '</span>').join('');
+  document.getElementById('mini-quote').innerHTML = '“Start early, invest regularly and protect your family first. The rest follows.”';
+
+  document.getElementById('calc-groups').innerHTML = NP.GROUPS.map(g =>
+    '<div class="calc-group"><div class="calc-group-title"><span class="gicon">' + I(g.icon) + '</span><h3>' + esc(g.title) + '</h3><span class="chip' + (g.key === 'goals' ? ' chip-gold' : '') + '">' + esc(g.chip) + '</span></div>' +
+    '<div class="calc-grid">' + NP.CALCS.filter(c => c.group === g.key).map(c =>
+      '<a class="calc-card" href="' + NP.calcHref(c.id) + '"><span class="cicon">' + I(c.icon) + '</span>' +
+      '<h4>' + esc(c.title) + '</h4><p>' + esc(c.desc) + '</p>' +
+      '<span class="meta">' + (c.steps + 1) + ' steps · PDF report</span>' +
+      '<span class="go">Start ' + I('arrow-right') + '</span></a>').join('') + '</div></div>').join('');
+
+  const notes = {
+    lic: ['Life cover with savings', 'Guaranteed maturity + bonus', 'Usually below inflation: use for protection'],
+    po: ['PPF, NSC, KVP, SSY, MIS, RD', 'Backed by the Government of India', 'Rates revised every quarter'],
+    mf: ['SIP in equity & hybrid funds', 'Best for goals 5+ years away', 'Market-linked; returns not guaranteed']
+  };
+  document.getElementById('options-3').innerHTML = NP.INVEST.map(x =>
+    '<div class="opt-card"><div class="head">' + I(x.icon) + '<h3 style="margin:0">' + esc(x.name) + '</h3></div>' +
+    '<div class="rate">' + x.def + '%<small> p.a. default</small></div><div class="muted" style="font-size:.88rem">' + esc(x.product) + '</div>' +
+    '<ul>' + notes[x.key].map(n => '<li>' + esc(n) + '</li>').join('') + '</ul></div>').join('');
+
+  document.getElementById('services').innerHTML = ['Life insurance', 'Health insurance', 'Mutual funds & SIP', 'Post Office schemes', 'Retirement planning', 'Child education', 'Home & car loans']
+    .map(s => '<span class="chip">' + esc(s) + '</span>').join('');
+
+  const cc = C.contact;
+  document.getElementById('contact-cards').innerHTML = [['phone', 'Call', cc.phone], ['mail', 'Email', cc.email], ['map-pin', 'Visit', cc.address], ['clock', 'Office hours', cc.hours]]
+    .map(c => '<div class="tile" style="display:flex;gap:12px;align-items:flex-start"><span class="cicon" style="width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--navy-50);color:var(--navy-700);flex:none">' + I(c[0]) + '</span><div><div class="kl">' + c[1] + '</div><div style="font-weight:600;margin-top:4px;word-break:break-word">' + esc(c[2]) + '</div></div></div>').join('');
+})();
+</script>
+</body>
+</html>
