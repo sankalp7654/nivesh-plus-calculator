@@ -102,7 +102,7 @@
     return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   };
   const nf0 = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
-  const trim = s => s.replace(/\.?0+$/, '');
+  const trim = s => (s.indexOf('.') < 0 ? s : s.replace(/\.?0+$/, ''));
   const fmt = (NP.fmt = {
     num: n => nf0.format(Math.round(n || 0)),
     inr: n => (n < 0 ? '−' : '') + '₹' + nf0.format(Math.abs(Math.round(n || 0))),
@@ -287,7 +287,8 @@
     { id: 'real-return', group: 'invest', icon: 'percent', title: 'Real Return', short: 'Your return after inflation', desc: 'Know what you invested and what you received? Find your true annual return after inflation and tax.', steps: 4 },
     { id: 'emi-calculator', group: 'loan', icon: 'calculator', title: 'EMI Calculator', short: 'EMI, interest and prepayment', desc: 'Calculate EMI for any loan, see the full repayment schedule and how much prepayment saves.', steps: 4 },
     { id: 'loan-plan', group: 'loan', icon: 'home', title: 'Loan Planner', short: 'Affordability and down payment', desc: 'Check how much loan you can comfortably afford and plan the down payment for your home or car.', steps: 6 },
-    { id: 'loan-interest-recovery', group: 'loan', icon: 'hand-coins', title: 'Loan Interest Recovery', short: 'Make your loan interest zero', desc: 'Find how much to invest alongside your EMI so the returns pay back every rupee of loan interest.', steps: 5 }
+    { id: 'loan-interest-recovery', group: 'loan', icon: 'hand-coins', title: 'Loan Interest Recovery', short: 'Make your loan interest zero', desc: 'Find how much to invest alongside your EMI so the returns pay back every rupee of loan interest.', steps: 5 },
+    { id: 'extra-emi-sip', group: 'loan', icon: 'zap', title: 'Extra EMI vs SIP', short: 'Close early or invest the extra?', desc: 'Pay x% over your EMI to see when the loan closes, or put x% of the EMI in a SIP to see how much interest comes back.', steps: 5 }
   ];
   NP.calcHref = id => ROOT + 'calculators/' + id + '.html';
 
