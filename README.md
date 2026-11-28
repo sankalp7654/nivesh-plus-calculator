@@ -21,7 +21,11 @@ A static website (GitHub Pages ready) with a landing page and 12 multi-step fina
 
 All advisor details live in **one file**: `assets/js/config.js`. Edit the name, credentials, phone, WhatsApp, email, address, office hours and website there. The change shows up on every page and every PDF.
 
-Photo: add a square photo (400×400 px or larger), e.g. `assets/img/sanjay-dubey.jpg`, then set `photo: 'assets/img/sanjay-dubey.jpg'` in `config.js`.
+WhatsApp: set `contact.whatsapp` (digits with country code, e.g. `919425172507`) and optionally `contact.whatsappMessage` (pre-filled chat text). When it is set, every page shows a floating WhatsApp button, and the "Talk to an advisor" and "Book a free consultation" buttons, the contact list and the calculator summaries all link to a WhatsApp chat. Leave it empty to turn WhatsApp off.
+
+Map: set `contact.mapUrl` to a Google Maps link. The address then becomes a clickable link.
+
+Photo: the advisor photo is `assets/img/sanjay-dubey.jpg` (square, 800×800 px). To change it, replace that file or point `advisor.photo` in `config.js` at a new one.
 
 ## Change default costs and rates
 
@@ -45,3 +49,15 @@ Inputs are remembered in the visitor's browser (localStorage), so they can come 
 ## Preview locally
 
 Open `index.html` directly in a browser, or run `python3 -m http.server` in this folder and visit http://localhost:8000.
+
+## Services wheel and future subdomains
+
+The home page has an **Our services** section built around `assets/img/services-wheel.jpg` (the original artwork is kept as `services-wheel-original.png`). Each of the four coloured slices of the wheel is clickable, and so is the card next to it.
+
+Where each service leads is set in `services` in `assets/js/config.js`. Change only `url` to re-route a service:
+
+- `'calculators/loan-plan.html'`: a page on this site
+- `'whatsapp:<message>'`: opens a WhatsApp chat with that message pre-filled
+- `'https://bima.niveshplus.in'`: a subdomain or any other website (opens in a new tab)
+
+`quadrant` ties a service to its slice of the wheel: `tl` Insurance, `tr` Property, `bl` Health, `br` Home Loan.

@@ -187,7 +187,9 @@
       '<p>' + esc(cfg.intro || meta.desc) + '</p></div></section>' +
       '<div class="container"><div class="wizard">' +
       '<aside class="wiz-rail"><div class="rail-title">' + steps.length + ' simple steps</div><ol class="wiz-steps"></ol>' +
-      '<div class="rail-help"><strong>Need help with your plan?</strong>Talk to ' + esc(NP.config.advisor.name) + ' for a free consultation.<br><a href="' + NP.callHref() + '">' + esc(NP.config.contact.phone) + '</a></div></aside>' +
+      '<div class="rail-help"><strong>Need help with your plan?</strong>Talk to ' + esc(NP.config.advisor.name) + ' for a free consultation.<br><a href="' + NP.telHref() + '">' + esc(NP.config.contact.phone) + '</a>' +
+      (NP.config.contact.whatsapp ? '<br><a href="' + esc(NP.waHref('Namaste Sanjay ji, I am using the ' + meta.title + ' calculator on Nivesh Plus and need help with my plan.')) + '" target="_blank" rel="noopener">' + icon('whatsapp') + ' Chat on WhatsApp</a>' : '') +
+      '</div></aside>' +
       '<section class="wiz-card" aria-live="polite"><div class="wiz-progress"><div></div></div><div class="wiz-mobile-steps"></div><div class="wiz-body"></div>' +
       '<div class="wiz-error" role="alert"></div>' +
       '<div class="wiz-foot"><button class="btn btn-link" data-act="back">' + icon('arrow-left') + 'Back</button><span class="spacer"></span>' +
@@ -369,7 +371,8 @@
         '<button class="btn btn-ghost" data-sum="edit">' + icon('edit') + 'Edit inputs</button>' +
         '<button class="btn btn-link" data-sum="restart">' + icon('refresh') + 'Start over</button>' +
         '<div class="hint">In the print window choose <b>“Save as PDF”</b> as the destination. The report uses a fixed A4 template with ' + esc(NP.config.company) + ' branding.</div></div>' +
-        '<div style="margin-top:18px">' + NP.h.note('Want a personalised plan? Call <b>' + esc(NP.config.advisor.name) + '</b> at <b>' + esc(NP.config.contact.phone) + '</b> or email <b>' + esc(NP.config.contact.email) + '</b>.', '', 'phone') + '</div>';
+        '<div style="margin-top:18px">' + NP.h.note('Want a personalised plan? Call or WhatsApp <b>' + esc(NP.config.advisor.name) + '</b> at <b>' + esc(NP.config.contact.phone) + '</b> or email <b>' + esc(NP.config.contact.email) + '</b>.' +
+          (NP.config.contact.whatsapp ? '<div style="margin-top:10px"><a class="btn btn-wa btn-sm" href="' + esc(NP.waHref('Namaste Sanjay ji, I have completed the ' + meta.title + ' calculator on Nivesh Plus' + ((s._client || '').trim() ? ' (name: ' + s._client.trim() + ')' : '') + '. Please help me with a personalised plan.')) + '" target="_blank" rel="noopener">' + icon('whatsapp') + 'Discuss this plan on WhatsApp</a></div>' : ''), '', 'phone') + '</div>';
     }
 
     /* ---------------- PDF (print) report ---------------- */
@@ -381,7 +384,7 @@
       const client = (s._client || '').trim();
       rep.innerHTML = '<div class="rpt">' +
         '<div class="rpt-head">' + NP.logo() + '<div class="rb"><div class="n">Nivesh<span> Plus</span></div><div class="t">' + esc(C.tagline) + '</div></div>' +
-        '<div class="ra"><div><div class="an">' + esc(a.name) + '</div><div class="ar">' + esc(a.title) + '</div><div class="ac">' + esc(c.phone) + ' · ' + esc(c.email) + '</div></div>' +
+        '<div class="ra"><div><div class="an">' + esc(a.name) + '</div><div class="ar">' + esc(a.title) + '</div><div class="ac">' + (c.whatsapp ? 'Call / WhatsApp: ' : '') + esc(c.phone) + ' · ' + esc(c.email) + '</div></div>' +
         '<img src="' + NP.photoSrc() + '" alt=""></div></div>' +
         '<div class="rpt-title"><div><h1>' + esc(meta.title) + ' Report</h1><div class="rs">' + esc(meta.desc) + '</div></div>' +
         '<div class="rm">Prepared for: <b>' + esc(client || '______________________') + '</b><br>Date: <b>' + fmt.date() + '</b><br>Ref: <b>' + ref + '</b></div></div>' +

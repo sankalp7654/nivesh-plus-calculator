@@ -58,6 +58,7 @@
     mountain: '<path d="m8 3 4 8 5-5 5 15H2L8 3z"/>',
     menu: '<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
     message: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+    whatsapp: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.2 8.6c.2-.4.6-.4.8 0l.6 1.3c.1.3 0 .6-.2.8l-.4.4c.5 1.1 1.4 2 2.5 2.5l.4-.4c.2-.2.5-.3.8-.2l1.3.6c.4.2.4.6 0 .8-.6.6-1.4.9-2.2.6-1.8-.7-3.2-2.1-3.9-3.9-.3-.8 0-1.6.6-2.2z" fill="currentColor" stroke="none"/>',
     'file-text': '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
     baby: '<path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/>',
     zap: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
@@ -94,7 +95,7 @@
   };
 
   NP.logo = function (cls) {
-    return '<svg class="brand-mark ' + (cls || '') + '" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#0b2545"/><rect x=".75" y=".75" width="46.5" height="46.5" rx="11.25" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1.5"/><path d="M12 34V15l14 19V15" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 24.5h9M35.5 20v9" stroke="#e0a21b" stroke-width="3.4" stroke-linecap="round"/></svg>';
+    return '<img class="brand-mark ' + (cls || '') + '" src="' + ROOT + 'assets/img/logo.png" alt="" width="512" height="512">';
   };
 
   /* ---------------- Escaping & formatting ---------------- */
@@ -296,21 +297,58 @@
   function contactList(cls) {
     const c = CFG.contact || {};
     const tel = c.phoneLink ? '<a href="tel:' + NP.esc(c.phoneLink) + '">' + NP.esc(c.phone) + '</a>' : NP.esc(c.phone);
+    const addr = c.mapUrl ? '<a href="' + NP.esc(c.mapUrl) + '" target="_blank" rel="noopener">' + NP.esc(c.address) + '</a>' : NP.esc(c.address);
     return '<ul class="contact-list ' + (cls || '') + '">' +
       '<li>' + NP.icon('phone') + '<span>' + tel + '</span></li>' +
+      (c.whatsapp ? '<li>' + NP.icon('whatsapp') + '<span><a href="' + NP.esc(NP.waHref()) + '" target="_blank" rel="noopener">Chat on WhatsApp</a></span></li>' : '') +
       '<li>' + NP.icon('mail') + '<span><a href="mailto:' + NP.esc(c.email) + '">' + NP.esc(c.email) + '</a></span></li>' +
-      '<li>' + NP.icon('map-pin') + '<span>' + NP.esc(c.address) + '</span></li>' +
+      '<li>' + NP.icon('map-pin') + '<span>' + addr + '</span></li>' +
       (c.hours ? '<li>' + NP.icon('clock') + '<span>' + NP.esc(c.hours) + '</span></li>' : '') +
       '</ul>';
   }
   NP.contactList = contactList;
   NP.photoSrc = () => ROOT + ((CFG.advisor && CFG.advisor.photo) || 'assets/img/advisor-placeholder.svg');
+  /* WhatsApp chat link with an optional pre-filled message. */
+  NP.waHref = function (msg) {
+    const c = CFG.contact || {};
+    if (!c.whatsapp) return '';
+    const text = msg || c.whatsappMessage;
+    return 'https://wa.me/' + c.whatsapp + (text ? '?text=' + encodeURIComponent(text) : '');
+  };
+  NP.telHref = function () {
+    const c = CFG.contact || {};
+    return c.phoneLink ? 'tel:' + c.phoneLink : ROOT + 'index.html#contact';
+  };
   NP.callHref = function () {
     const c = CFG.contact || {};
-    if (c.whatsapp) return 'https://wa.me/' + c.whatsapp;
-    if (c.phoneLink) return 'tel:' + c.phoneLink;
-    return ROOT + 'index.html#contact';
+    if (c.whatsapp) return NP.waHref();
+    return NP.telHref();
   };
+
+  /* Resolve a service url: 'whatsapp:<message>', an absolute URL (e.g. a subdomain) or a site-relative path. */
+  NP.serviceHref = function (svc) {
+    const u = (svc && svc.url) || '';
+    if (u.indexOf('whatsapp:') === 0) return NP.waHref(u.slice(9)) || NP.telHref();
+    if (/^(https?:)?\/\//.test(u) || u.indexOf('mailto:') === 0 || u.indexOf('tel:') === 0) return u;
+    return u ? ROOT + u : ROOT + 'index.html#contact';
+  };
+  NP.isExternal = href => /^(https?:)?\/\//.test(href) && href.indexOf(location.host) === -1;
+
+  /* Floating WhatsApp chat button, shown on every page. */
+  function renderWhatsAppFab() {
+    const c = CFG.contact || {};
+    if (!c.whatsapp || document.querySelector('.wa-fab')) return;
+    const cur = NP.CALCS.find(x => x.id === document.body.dataset.calc);
+    const msg = cur ? 'Namaste Sanjay ji, I used the ' + cur.title + ' calculator on Nivesh Plus and would like to discuss my plan.' : c.whatsappMessage;
+    const a = document.createElement('a');
+    a.className = 'wa-fab';
+    a.href = NP.waHref(msg);
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.setAttribute('aria-label', 'Chat with ' + CFG.advisor.name + ' on WhatsApp');
+    a.innerHTML = NP.icon('whatsapp') + '<span>WhatsApp</span>';
+    document.body.appendChild(a);
+  }
 
   function renderHeader() {
     const el = document.getElementById('np-header');
@@ -329,9 +367,10 @@
       '<nav class="nav" aria-label="Main">' +
       '<a href="' + ROOT + 'index.html"' + (cur ? '' : ' class="active"') + '>Home</a>' +
       '<div class="nav-drop"><a href="' + ROOT + 'index.html#calculators"' + (cur ? ' class="active"' : '') + '>Calculators</a><div class="nav-drop-menu">' + menu + '</div></div>' +
+      '<a href="' + ROOT + 'index.html#services">Services</a>' +
       '<a href="' + ROOT + 'index.html#about">About</a>' +
       '<a href="' + ROOT + 'index.html#contact">Contact</a>' +
-      '<a class="btn btn-primary btn-sm" href="' + NP.callHref() + '">' + NP.icon('phone') + 'Talk to an advisor</a>' +
+      '<a class="btn btn-primary btn-sm" href="' + NP.esc(NP.callHref()) + '"' + (CFG.contact && CFG.contact.whatsapp ? ' target="_blank" rel="noopener"' : '') + '>' + NP.icon(CFG.contact && CFG.contact.whatsapp ? 'whatsapp' : 'phone') + 'Talk to an advisor</a>' +
       '</nav></div></header>';
     const t = document.querySelector('.nav-toggle'), n = document.querySelector('.nav');
     t.addEventListener('click', () => { const o = n.classList.toggle('open'); t.setAttribute('aria-expanded', o); });
@@ -478,12 +517,13 @@
   NP.ready(function () {
     renderHeader();
     renderFooter();
+    renderWhatsAppFab();
     document.querySelectorAll('[data-np]').forEach(el => {
       const k = el.dataset.np, c = CFG.contact || {}, a = CFG.advisor || {};
       const map = { name: a.name, title: a.title, credentials: a.credentials, bio: a.bio, phone: c.phone, email: c.email, address: c.address, hours: c.hours, company: CFG.company, tagline: CFG.tagline };
       if (k === 'photo') el.src = NP.photoSrc();
       else if (k === 'contact') el.innerHTML = contactList();
-      else if (k === 'call') el.href = NP.callHref();
+      else if (k === 'call') { el.href = NP.callHref(); if (c.whatsapp) { el.target = '_blank'; el.rel = 'noopener'; } }
       else if (map[k] != null) el.textContent = map[k];
     });
     charts.bind(document);

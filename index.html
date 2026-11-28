@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nivesh Plus | Financial Calculators by Sanjay Dubey</title>
 <meta name="description" content="Free multi-step financial calculators: human life value, retirement, child education, marriage, honeymoon, goal savings, EMI, loan planning, loan interest recovery and extra EMI vs SIP. By Sanjay Dubey, Nivesh Plus.">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Noto+Sans+Devanagari:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body data-root="">
@@ -39,6 +40,24 @@
         <div data-np="contact"></div>
         <a class="btn btn-primary" data-np="call" id="cta-call"></a>
         <div class="mini-quote" id="mini-quote"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section services" id="services">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Our services · हमारी सेवाएँ</span>
+        <h2>Everything your family needs, under one roof</h2>
+        <p>Insurance, health cover, property and home loans, all from one trusted advisor in Satna. Tap a service to get started.</p>
+      </div>
+      <div class="svc-layout">
+        <div class="svc-col" id="svc-left"></div>
+        <figure class="svc-wheel">
+          <img id="svc-wheel-img" alt="Nivesh Plus services: Insurance Agency, Property, Health Insurance and Home Loan, with Sanjay Dubey at the centre" width="1000" height="1000" loading="lazy">
+          <svg class="svc-hotspots" viewBox="0 0 100 100" id="svc-hotspots"></svg>
+        </figure>
+        <div class="svc-col" id="svc-right"></div>
       </div>
     </div>
   </section>
@@ -87,7 +106,7 @@
         <h2 data-np="name"></h2>
         <p class="muted" style="margin-top:-6px"><span data-np="title"></span> · <span data-np="company"></span></p>
         <p data-np="bio"></p>
-        <div class="chip-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" id="services"></div>
+        <div class="chip-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px" id="about-services"></div>
       </div>
     </div>
   </section>
@@ -100,7 +119,8 @@
           <p>Book a free, no-obligation consultation. Bring your calculator report along.</p>
         </div>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <a class="btn btn-gold btn-lg" data-np="call" id="cta-call-2"></a>
+          <a class="btn btn-gold btn-lg" id="cta-call-2"></a>
+          <a class="btn btn-wa btn-lg" id="cta-wa" target="_blank" rel="noopener" hidden></a>
           <a class="btn btn-ghost btn-lg" id="cta-mail" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.3)"></a>
         </div>
       </div>
@@ -118,8 +138,11 @@
   const NP = window.NP, C = NP.config, I = NP.icon, esc = NP.esc;
   document.getElementById('cta-calcs').innerHTML = I('calculator') + 'Explore calculators';
   document.getElementById('cta-edu').innerHTML = I('graduation-cap') + 'Plan child’s education';
-  document.getElementById('cta-call').innerHTML = I('phone') + 'Book a free consultation';
-  document.getElementById('cta-call-2').innerHTML = I('phone') + esc(C.contact.phone);
+  document.getElementById('cta-call').innerHTML = I(C.contact.whatsapp ? 'whatsapp' : 'phone') + 'Book a free consultation';
+  const call2 = document.getElementById('cta-call-2');
+  call2.href = NP.telHref(); call2.innerHTML = I('phone') + esc(C.contact.phone);
+  const wa = document.getElementById('cta-wa');
+  if (C.contact.whatsapp) { wa.href = NP.waHref(); wa.innerHTML = I('whatsapp') + 'WhatsApp'; wa.hidden = false; }
   const mail = document.getElementById('cta-mail');
   mail.href = 'mailto:' + C.contact.email; mail.innerHTML = I('mail') + 'Email us';
   document.getElementById('hero-points').innerHTML = [['shield-check', 'Insurance & retirement'], ['graduation-cap', 'Education & marriage'], ['file-text', 'Free PDF reports']]
@@ -144,12 +167,49 @@
     '<div class="rate">' + x.def + '%<small> p.a. default</small></div><div class="muted" style="font-size:.88rem">' + esc(x.product) + '</div>' +
     '<ul>' + notes[x.key].map(n => '<li>' + esc(n) + '</li>').join('') + '</ul></div>').join('');
 
-  document.getElementById('services').innerHTML = ['Life insurance', 'Health insurance', 'Mutual funds & SIP', 'Post Office schemes', 'Retirement planning', 'Child education', 'Home & car loans']
+  document.getElementById('about-services').innerHTML = ['Life insurance', 'Health insurance', 'Mutual funds & SIP', 'Post Office schemes', 'Retirement planning', 'Child education', 'Home & car loans']
     .map(s => '<span class="chip">' + esc(s) + '</span>').join('');
 
+  /* Services wheel: cards beside the image and clickable quadrants on it. */
+  const svcs = C.services || [];
+  const ext = href => NP.isExternal(href) ? ' target="_blank" rel="noopener"' : '';
+  document.getElementById('svc-wheel-img').src = C.servicesWheel || 'assets/img/services-wheel.jpg';
+  const card = s => {
+    const href = NP.serviceHref(s);
+    return '<a class="svc-card" id="svc-' + esc(s.key) + '" data-q="' + esc(s.quadrant) + '" href="' + esc(href) + '"' + ext(href) + ' style="--svc:' + esc(s.color) + '">' +
+      '<span class="svc-icon">' + I(s.icon) + '</span><span class="svc-body"><span class="svc-hi" lang="hi">' + esc(s.titleHi) + '</span>' +
+      '<span class="svc-title">' + esc(s.title) + '</span><span class="svc-desc">' + esc(s.desc) + '</span>' +
+      '<span class="svc-go">' + esc(s.cta || 'Learn more') + I('arrow-right') + '</span></span></a>';
+  };
+  const order = { tl: 0, bl: 1, tr: 2, br: 3 };
+  const sorted = svcs.slice().sort((a, b) => (order[a.quadrant] ?? 9) - (order[b.quadrant] ?? 9));
+  document.getElementById('svc-left').innerHTML = sorted.filter(s => s.quadrant === 'tl' || s.quadrant === 'bl').map(card).join('');
+  document.getElementById('svc-right').innerHTML = sorted.filter(s => s.quadrant !== 'tl' && s.quadrant !== 'bl').map(card).join('');
+  /* Quarter-ring paths matching the four coloured slices of the wheel (centre 50,50). */
+  const R = 39, r = 17, P = (a, rad) => (50 + rad * Math.cos(a)).toFixed(2) + ' ' + (50 + rad * Math.sin(a)).toFixed(2);
+  const ang = { tl: [Math.PI, 1.5 * Math.PI], tr: [1.5 * Math.PI, 2 * Math.PI], br: [0, 0.5 * Math.PI], bl: [0.5 * Math.PI, Math.PI] };
+  document.getElementById('svc-hotspots').innerHTML = svcs.filter(s => ang[s.quadrant]).map(s => {
+    const [a0, a1] = ang[s.quadrant], href = NP.serviceHref(s);
+    const d = 'M' + P(a0, r) + ' L' + P(a0, R) + ' A' + R + ' ' + R + ' 0 0 1 ' + P(a1, R) + ' L' + P(a1, r) + ' A' + r + ' ' + r + ' 0 0 0 ' + P(a0, r) + 'Z';
+    return '<a href="' + esc(href) + '"' + ext(href) + ' data-q="' + esc(s.quadrant) + '" aria-label="' + esc(s.title + ' – ' + (s.cta || 'Learn more')) + '"><title>' + esc(s.title) + '</title><path d="' + d + '"/></a>';
+  }).join('');
+  /* Hovering a card highlights its slice, and vice versa. */
+  const sec = document.getElementById('services');
+  sec.addEventListener('mouseover', e => { const t = e.target.closest('[data-q]'); sec.dataset.hl = t ? t.dataset.q : ''; });
+  sec.addEventListener('mouseleave', () => { sec.dataset.hl = ''; });
+
   const cc = C.contact;
-  document.getElementById('contact-cards').innerHTML = [['phone', 'Call', cc.phone], ['mail', 'Email', cc.email], ['map-pin', 'Visit', cc.address], ['clock', 'Office hours', cc.hours]]
-    .map(c => '<div class="tile" style="display:flex;gap:12px;align-items:flex-start"><span class="cicon" style="width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--navy-50);color:var(--navy-700);flex:none">' + I(c[0]) + '</span><div><div class="kl">' + c[1] + '</div><div style="font-weight:600;margin-top:4px;word-break:break-word">' + esc(c[2]) + '</div></div></div>').join('');
+  const cards = [
+    ['phone', 'Call', cc.phone, NP.telHref()],
+    cc.whatsapp && ['whatsapp', 'WhatsApp', 'Chat with ' + C.advisor.name, NP.waHref(), true],
+    ['mail', 'Email', cc.email, 'mailto:' + cc.email],
+    ['map-pin', 'Visit', cc.address, cc.mapUrl, true, cc.mapUrl && 'Open in Google Maps'],
+    ['clock', 'Office hours', cc.hours]
+  ].filter(Boolean);
+  document.getElementById('contact-cards').innerHTML = cards
+    .map(c => '<div class="tile" style="display:flex;gap:12px;align-items:flex-start"><span class="cicon" style="width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--navy-50);color:var(--navy-700);flex:none">' + I(c[0]) + '</span><div><div class="kl">' + c[1] + '</div><div style="font-weight:600;margin-top:4px;word-break:break-word">' +
+      (c[3] ? '<a href="' + esc(c[3]) + '"' + (c[4] ? ' target="_blank" rel="noopener"' : '') + ' style="color:inherit">' + esc(c[2]) + '</a>' : esc(c[2])) + '</div>' +
+      (c[5] ? '<a href="' + esc(c[3]) + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;font-size:.88rem;color:var(--navy-700)">' + esc(c[5]) + ' →</a>' : '') + '</div></div>').join('');
 })();
 </script>
 </body>
