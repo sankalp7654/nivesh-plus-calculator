@@ -61,3 +61,11 @@ Where each service leads is set in `services` in `assets/js/config.js`. Change o
 - `'https://bima.niveshplus.in'`: a subdomain or any other website (opens in a new tab)
 
 `quadrant` ties a service to its slice of the wheel: `tl` Insurance, `tr` Property, `bl` Health, `br` Home Loan.
+
+## After changing CSS or JS
+
+Each HTML file loads its stylesheet and scripts with a version tag (`style.css?v=20261128b`). Browsers keep these files for a while, so when you change any file in `assets/css` or `assets/js`, bump the tag in every HTML file so visitors get the new files together and the page doesn't break:
+
+```sh
+V=$(date +%Y%m%d%H%M); for f in index.html calculators/*.html; do sed -i '' -E "s/\?v=[A-Za-z0-9]+/?v=$V/g" "$f"; done
+```
