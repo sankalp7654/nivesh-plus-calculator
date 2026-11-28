@@ -1,6 +1,6 @@
 # Nivesh Plus — Financial Calculators
 
-A static website (GitHub Pages ready) with a landing page and 10 multi-step financial calculators. Each calculator ends with a summary and a branded A4 PDF report.
+A static website (GitHub Pages ready) with a landing page and 11 multi-step financial calculators. Each calculator ends with a summary and a branded A4 PDF report.
 
 | Group | Calculator | File |
 |---|---|---|
@@ -14,6 +14,7 @@ A static website (GitHub Pages ready) with a landing page and 10 multi-step fina
 | | Real Return (CAGR after inflation & tax) | `calculators/real-return.html` |
 | Loans | EMI Calculator (with prepayment) | `calculators/emi-calculator.html` |
 | | Loan Planner (affordability & down payment) | `calculators/loan-plan.html` |
+| | Loan Interest Recovery (invest to make loan interest zero) | `calculators/loan-interest-recovery.html` |
 
 ## Replace the placeholder details
 

@@ -71,7 +71,8 @@
   NP.itemsTotal = (obj) => Object.values(obj || {}).reduce((t, v) => t + (NP.parseNum(v) || 0), 0);
 
   /* ---------------- Shared step: compare 3 investment options ---------------- */
-  /* opts: { target(s,r)->amount needed at rate r (lets existing savings grow), years(s), inflation(s), title, sub, after(s) } */
+  /* opts: { target(s,r)->amount needed at rate r (lets existing savings grow), years(s), inflation(s), title, sub, after(s),
+     calc(s,r,years,inf)->{lump,sip,yearly,real} optional override when the amount to invest is not a simple corpus target } */
   NP.investStep = function (opts) {
     return {
       title: opts.title || 'Choose how you will invest',
@@ -93,7 +94,7 @@
   };
   function investOut(s, opts, x) {
     const yrs = opts.years(s), inf = opts.inflation(s), r = s.inv[x.key];
-    const c = NP.investCalc(opts.target(s, r), yrs, r, inf), st = NP.suitability(x.key, yrs);
+    const c = opts.calc ? opts.calc(s, r, yrs, inf) : NP.investCalc(opts.target(s, r), yrs, r, inf), st = NP.suitability(x.key, yrs);
     return '<div><div class="bl">Invest today (one time)</div><div class="big">' + fmt.short(c.lump) + '</div><div class="muted" style="font-size:.78rem">' + fmt.inr(c.lump) + '</div></div>' +
       '<div class="row2"><span>Or monthly SIP</span><b>' + fmt.inr(c.sip) + '</b></div>' +
       '<div class="row2"><span>Or yearly</span><b>' + fmt.inr(c.yearly) + '</b></div>' +
@@ -122,7 +123,7 @@
   NP.investSummary = function (s, target, years, inflation, opts) {
     opts = opts || {};
     const rows = NP.INVEST.map(x => {
-      const r = s.inv[x.key], c = NP.investCalc(typeof target === 'function' ? target(r) : target, years, r, inflation);
+      const r = s.inv[x.key], c = opts.calc ? opts.calc(r) : NP.investCalc(typeof target === 'function' ? target(r) : target, years, r, inflation);
       return { x, r, c };
     });
     const table = NP.h.table(['Option', 'Return', 'Real return', 'One-time today', 'Monthly SIP', 'Yearly'],

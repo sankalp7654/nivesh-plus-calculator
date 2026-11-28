@@ -286,7 +286,8 @@
     { id: 'future-value', group: 'invest', icon: 'trending-up', title: 'Future Value', short: 'Grow a lump sum or SIP', desc: 'See what your lump sum or monthly SIP grows into, and what that money is worth after inflation.', steps: 4 },
     { id: 'real-return', group: 'invest', icon: 'percent', title: 'Real Return', short: 'Your return after inflation', desc: 'Know what you invested and what you received? Find your true annual return after inflation and tax.', steps: 4 },
     { id: 'emi-calculator', group: 'loan', icon: 'calculator', title: 'EMI Calculator', short: 'EMI, interest and prepayment', desc: 'Calculate EMI for any loan, see the full repayment schedule and how much prepayment saves.', steps: 4 },
-    { id: 'loan-plan', group: 'loan', icon: 'home', title: 'Loan Planner', short: 'Affordability and down payment', desc: 'Check how much loan you can comfortably afford and plan the down payment for your home or car.', steps: 6 }
+    { id: 'loan-plan', group: 'loan', icon: 'home', title: 'Loan Planner', short: 'Affordability and down payment', desc: 'Check how much loan you can comfortably afford and plan the down payment for your home or car.', steps: 6 },
+    { id: 'loan-interest-recovery', group: 'loan', icon: 'hand-coins', title: 'Loan Interest Recovery', short: 'Make your loan interest zero', desc: 'Find how much to invest alongside your EMI so the returns pay back every rupee of loan interest.', steps: 5 }
   ];
   NP.calcHref = id => ROOT + 'calculators/' + id + '.html';
 
