@@ -53,10 +53,10 @@ window.NP_CONFIG = {
     phoneLink: '+919425172507',           // used for click-to-call
     whatsapp: '919425172507',             // digits with country code, used for wa.me chat links
     whatsappMessage: 'Namaste Sanjay ji, I would like a free financial planning consultation.', // pre-filled WhatsApp text
-    email: 'email@example.com',           // PLACEHOLDER
+    email: 'info@niveshplus.com',
     address: 'Shivkripa Complex, Opp Shiv-Sai Mandir Gali No 5, Virat Nagar Main Rd, Rajendra Nagar, Satna, Madhya Pradesh 485001',
     mapUrl: 'https://maps.app.goo.gl/fAxbkeqs9ZLVtA74A', // Google Maps link for the address
     hours: 'Mon–Sat, 10:00 AM – 7:00 PM', // PLACEHOLDER
-    website: ''                           // PLACEHOLDER — e.g. 'www.niveshplus.in' (printed on PDF footer)
+    website: 'www.niveshplus.com'          // printed on the PDF footer
   }
 };
